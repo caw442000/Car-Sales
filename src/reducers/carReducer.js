@@ -21,6 +21,8 @@ export const carReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'BUY_ITEM':
       const addedFeature = action.payload
+      // const alreadyAdded = state.cars.features.findIndex((item) => item.id === addedFeature.id)
+      if (!state.car.features.includes(action.payload)){
       return {
        
         ...state,
@@ -29,20 +31,20 @@ export const carReducer = (state = initialState, action) => {
           ...state.car,
           features: [...state.car.features, addedFeature]
         }
-      };
+      }} else return state;
 
       case 'REMOVE_FEATURE':
         const removeFeature = action.payload
         console.log("feature to remove", removeFeature)
+        console.log("state to remove from", state)
         return {
           ...state,
           additionalPrice: (state.additionalPrice - removeFeature.price), 
           car:{
             ...state.car, 
             features: [...state.car.features.filter((feature) => {
-              if(feature.id === removeFeature.id)
-              return null;
-              else return feature;
+              if(feature.id !== removeFeature.id)
+              return feature;
             })]
           }
         }
